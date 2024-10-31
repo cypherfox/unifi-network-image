@@ -1,0 +1,60 @@
+# Copyright 2024 Lutz Behnke
+#
+
+name: Build Image
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+#env:
+#  GO_MODULE: github.com/finleap-connect/monoskope
+#  GO_VERSION: 1.19.x
+#  GINKGO_VERSION: v1.16.5
+#  GO_CI_LINT_VERSION: v1.48.0
+
+jobs:
+  image:
+    env:
+      REGISTRY: ghcr.io
+      REPOSITORY: ${{ github.repository }}
+
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        packages: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+  
+      - name: Log in to github registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/unifi-network
+          tags: |
+            type=ref,event=tag
+            type=raw,value=0.0.0-{{sha}}
+  
+      - name: Build and push image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./deploy/docker
+          file: deploy/docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          build-args: |
+            BUILD_DATE=${{ date +"%y%m%d" }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            
+            

@@ -1,0 +1,10 @@
+
+container image:
+- complete run script
+  - configure mongodb data
+  - actually call java
+
+helm chart:
+- make mongodb config into helm values
+- write helm values into configMap
+- pull from configMap as ENV-Vars into container config in deployment
