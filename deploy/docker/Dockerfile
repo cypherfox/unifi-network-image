@@ -15,7 +15,7 @@ ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
   echo "**** install packages ****" && \
-  apk add --no-cache jsvc logrotate openjdk21-jre-headless unzip curl bash && \
+  apk add --no-cache jsvc logrotate openjdk17-jre-headless unzip curl bash && \
   echo "**** install unifi ****" && \
   if [ -z ${UNIFI_VERSION+x} ]; then \
     UNIFI_VERSION=$(curl -sX GET https://dl.ui.com/unifi/debian/dists/${UNIFI_BRANCH}/ubiquiti/binary-amd64/Packages \
