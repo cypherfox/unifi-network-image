@@ -24,6 +24,7 @@ jobs:
       - name: set values
         id: gen_bd
         run: |
+          echo -n "BUILD_DATE=" >> $GITHUB_OUTPUT
           date +"%y%m%d" >> $GITHUB_OUTPUT
   image:
     needs: [set-vars]
