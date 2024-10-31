@@ -37,9 +37,12 @@ RUN \
     /var/tmp/* 
 
 # add local files
-COPY system.properties /root/defaults/system.properties
+COPY system.properties /defaults/system.properties
+COPY run_unifi_network.sh /root/run_unifi_network.sh
 
 # Volumes and Ports
 WORKDIR /usr/lib/unifi
 VOLUME /config
 EXPOSE 8080 8443 8843 8880
+
+ENTRYPOINT [ "sh", "/root/run_unifi_network.sh" ]

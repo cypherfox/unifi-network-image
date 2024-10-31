@@ -2,13 +2,23 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+mongodb:
+  host: "unifi-network-mongodb-svc"
+  user: "unifi-user"
+  # the password for the user will be read from this secret
+  passwordSecret: "unifi-password"
+  dbname: "unifi-network-mongodb"
+
+
+
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: ghcr.io/cypherfox/unifi-network-image/unifi-network
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  #tag: ":0.0.0-1d96bf6"
+  tag: latest
 
 imagePullSecrets: []
 nameOverride: ""

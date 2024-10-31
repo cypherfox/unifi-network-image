@@ -2,7 +2,7 @@
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
-  name: unifi-network-mongodb
+  name: {{ .Values.mongodb.dbname }}
 spec:
   members: 3
   type: ReplicaSet
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: unifi-password
+  name: {{ .Values.mongodb.passwordSecret }}
 type: Opaque
 stringData:
   password: verySecure

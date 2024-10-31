@@ -49,7 +49,7 @@ if [[ ! -e /config/data/system.properties ]]; then
         sed -i "s/~MONGO_PORT~/${MONGO_PORT}/" /defaults/system.properties
         sed -i "s/~MONGO_DBNAME~/${MONGO_DBNAME}/" /defaults/system.properties
         sed -i "s/~MONGO_PASS~/${MONGO_PASS}/" /defaults/system.properties
-        if [[ "${MONGO_TLS,,}" = "true" ]]; then
+        if [[ "${MONGO_TLS}" = "true" ]]; then
             sed -i "s/~MONGO_TLS~/true/" /defaults/system.properties
         else
             sed -i "s/~MONGO_TLS~/false/" /defaults/system.properties
@@ -70,3 +70,23 @@ if [[ ! -f /config/data/keystore ]]; then
     -keysize 4096 -dname "cn=unifi" -ext san=dns:unifi
 fi
 
+if [[ -z ${MEM_LIMIT} ]] || [[ ${MEM_LIMIT} = "default" ]]; then
+    MEM_LIMIT="1024"
+fi
+
+# start the actual runner
+java \
+ -Xmx"${MEM_LIMIT}M" \
+ -Dlog4j2.formatMsgNoLookups=true \
+ -Dfile.encoding=UTF-8 \
+ -Djava.awt.headless=true \
+ -Dapple.awt.UIElement=true \
+ -XX:+UseParallelGC \
+ -XX:+ExitOnOutOfMemoryError \
+ -XX:+CrashOnOutOfMemoryError \
+ --add-opens java.base/java.lang=ALL-UNNAMED \
+ --add-opens java.base/java.time=ALL-UNNAMED \
+ --add-opens java.base/sun.security.util=ALL-UNNAMED \
+ --add-opens java.base/java.io=ALL-UNNAMED \
+ --add-opens java.rmi/sun.rmi.transport=ALL-UNNAMED \
+ -jar /usr/lib/unifi/lib/ace.jar start;
