@@ -58,14 +58,15 @@ jobs:
           tags: |
             type=ref,event=tag
             type=raw,value=0.0.0-{{sha}}
+            type=raw,latest
   
       - name: Build and push image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./deploy/docker
           file: deploy/docker/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}]
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
