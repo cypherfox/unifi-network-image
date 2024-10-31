@@ -30,10 +30,24 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+           - name: MONGO_USER
+             value: {{ .Values.mongodb.user }}
+           - name: MONGO_HOST
+             value: {{ .Values.mongodb.host }}
+           - name: MONGO_PORT
+             value: "{{ .Values.mongodb.port }}"
+           - name: MONGO_DBNAME
+             value: {{ .Values.mongodb.dbname }}
+           - name: MONGO_PASS
+             valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.mongodb.passwordSecret }}
+                 key: password
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

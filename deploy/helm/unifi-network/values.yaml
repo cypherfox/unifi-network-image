@@ -4,6 +4,7 @@
 
 mongodb:
   host: "unifi-network-mongodb-svc"
+  port: "27017"
   user: "unifi-user"
   # the password for the user will be read from this secret
   passwordSecret: "unifi-password"
@@ -15,7 +16,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/cypherfox/unifi-network-image/unifi-network
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   #tag: ":0.0.0-1d96bf6"
   tag: latest

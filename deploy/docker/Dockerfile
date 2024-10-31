@@ -15,7 +15,7 @@ ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
   echo "**** install packages ****" && \
-  apk add --no-cache jsvc logrotate openjdk21-jre-headless unzip curl && \
+  apk add --no-cache jsvc logrotate openjdk21-jre-headless unzip curl bash && \
   echo "**** install unifi ****" && \
   if [ -z ${UNIFI_VERSION+x} ]; then \
     UNIFI_VERSION=$(curl -sX GET https://dl.ui.com/unifi/debian/dists/${UNIFI_BRANCH}/ubiquiti/binary-amd64/Packages \
@@ -45,4 +45,4 @@ WORKDIR /usr/lib/unifi
 VOLUME /config
 EXPOSE 8080 8443 8843 8880
 
-ENTRYPOINT [ "sh", "/root/run_unifi_network.sh" ]
+ENTRYPOINT [ "/bin/bash", "/root/run_unifi_network.sh" ]
