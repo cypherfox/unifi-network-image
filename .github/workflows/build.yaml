@@ -16,10 +16,22 @@ on:
 #  GO_CI_LINT_VERSION: v1.48.0
 
 jobs:
+  set-vars:
+    runs-on: ubuntu-latest
+    outputs:
+      build_date: ${{ steps.gen_bd.outputs.BUILD_DATE }}
+    steps:
+      - name: set values
+        id: gen_bd
+        run: |
+          date +"%y%m%d" >> $GITHUB_OUTPUT
   image:
+    needs: [set-vars]
+
     env:
       REGISTRY: ghcr.io
       REPOSITORY: ${{ github.repository }}
+      BUILD_DATE: ${{ needs.set-vars.outputs.build_date }}
 
     runs-on: ubuntu-latest
     permissions:
@@ -54,7 +66,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
-            BUILD_DATE=${{ date +"%y%m%d" }}
+            BUILD_DATE=${{ env.BUILD_DATE }}
             VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             
             
