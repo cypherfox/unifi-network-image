@@ -2,23 +2,25 @@
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
-  name: {{ .Values.mongodb.dbname }}
+  name: {{ .Values.mongodb.resourceName }}
 spec:
   members: 3
   type: ReplicaSet
   version: "6.0.5"
   security:
     authentication:
-      modes: ["SCRAM"]
+      modes: ["SCRAM-SHA-1"]
   users:
     - name: unifi-user
       db: admin
       passwordSecretRef: # a reference to the secret that will be used to generate the user's password
-        name: unifi-password
+        name: {{ .Values.mongodb.passwordSecret }}
       roles:
         - name: clusterAdmin
           db: admin
         - name: userAdminAnyDatabase
+          db: admin
+        - name: root  
           db: admin
       scramCredentialsSecretName: unifi-scram
   additionalMongodConfig:
