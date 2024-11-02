@@ -33,7 +33,7 @@ RUN \
   mkdir /tmp/unifi-package && ar xv --output /tmp/unifi-package /tmp/unifi.deb && \
   mkdir /tmp/data-unpack && tar xvJf /tmp/unifi-package/data.tar.xz -C /tmp/data-unpack && \
   mkdir -p /usr/lib/unifi/lib/native/Linux/x86_64 && \
-  cd /tmp/data-unpack/usr/lib/unifi/lib/native/Linux/x86_64 && cp libubnt* /usr/lib/unifi/lib/native/Linux/x86_64 && \
+  cd /tmp/data-unpack/usr/lib/unifi/lib/native/Linux/x86_64 && cp -v libubnt* /usr/lib/unifi/lib/native/Linux/x86_64 && \
   printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
   echo "**** cleanup ****" && \
   apk del curl binutils && \
