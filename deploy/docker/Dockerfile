@@ -30,7 +30,7 @@ RUN \
   mv /usr/lib/UniFi /usr/lib/unifi && \
   echo "*** download and unpack generic Unix zip ***" && \
   curl -o /tmp/unifi.deb -L https://dl.ui.com/unifi/${UNIFI_VERSION}/unifi_sysvinit_all.deb && \
-  mkdir /tmp/unifi-package && ar xv --output /tmp/deb-package /tmp/unifi.deb && \
+  mkdir /tmp/unifi-package && ar xv --output /tmp/unifi-package /tmp/unifi.deb && \
   mkdir /tmp/data-unpack && tar xvJf /tmp/unifi-package/data.tar.xz -C /tmp/data-unpack && \
   mkdir -p /usr/lib/unifi/lib/native/Linux/x86_64 && \
   cd /tmp/data-unpack/usr/lib/unifi/lib/native/Linux/x86_64 && cp libubnt* /usr/lib/unifi/lib/native/Linux/x86_64 && \
