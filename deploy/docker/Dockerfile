@@ -12,7 +12,7 @@ ARG UNIFI_BRANCH="stable"
 ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
-apt-get update && apt-get install -y ca-certificates apt-transport-https curl gnupg netcat && \
+apt-get update && apt-get install -y ca-certificates apt-transport-https curl gnupg netcat-openbsd && \
 echo 'deb [ arch=amd64,arm64 ] https://www.ui.com/downloads/unifi/debian stable ubiquiti' > /etc/apt/sources.list.d/100-ubnt-unifi.list && \
 curl -o /etc/apt/trusted.gpg.d/unifi-repo.gpg -L https://dl.ui.com/unifi/unifi-repo.gpg  && \
 curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg -o /etc/apt/trusted.gpg.d/mongodb-server-7.0.gpg --dearmor && \
