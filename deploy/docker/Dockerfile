@@ -15,7 +15,7 @@ ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
   echo "**** install packages ****" && \
-  apk add --no-cache jsvc logrotate openjdk17-jre-headless unzip curl bash && \
+  apk add --no-cache jsvc logrotate openjdk17-jre-headless unzip curl binutils bash && \
   echo "**** install unifi ****" && \
   if [ -z ${UNIFI_VERSION+x} ]; then \
     UNIFI_VERSION=$(curl -sX GET https://dl.ui.com/unifi/debian/dists/${UNIFI_BRANCH}/ubiquiti/binary-amd64/Packages \
@@ -24,14 +24,19 @@ RUN \
     | awk -F '-' '{print $1}'); \
   fi && \
   mkdir -p /app && \
-  curl -o \
-  /tmp/unifi.zip -L \
-    "https://dl.ui.com/unifi/${UNIFI_VERSION}/UniFi.unix.zip" && \
+  echo "*** download and unpack generic Unix zip ***" && \
+  curl -o /tmp/unifi.zip -L "https://dl.ui.com/unifi/${UNIFI_VERSION}/UniFi.unix.zip" && \
   unzip /tmp/unifi.zip -d /usr/lib && \
   mv /usr/lib/UniFi /usr/lib/unifi && \
+  echo "*** download and unpack generic Unix zip ***" && \
+  curl -o /tmp/unifi.deb -L https://dl.ui.com/unifi/${UNIFI_VERSION}/unifi_sysvinit_all.deb && \
+  mkdir /tmp/unifi-package && ar xv --output /tmp/deb-package /tmp/unifi.deb && \
+  mkdir /tmp/data-unpack && tar xvJf /tmp/unifi-package/data.tar.xz -C /tmp/data-unpack && \
+  mkdir -p /usr/lib/unifi/lib/native/Linux/x86_64 && \
+  cd /tmp/data-unpack/usr/lib/unifi/lib/native/Linux/x86_64 && cp libubnt* /usr/lib/unifi/lib/native/Linux/x86_64 && \
   printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
   echo "**** cleanup ****" && \
-  apk del curl && \
+  apk del curl binutils && \
   rm -rf \
     /tmp/* \
     /var/tmp/* 

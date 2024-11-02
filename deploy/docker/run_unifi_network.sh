@@ -1,5 +1,7 @@
 #!/bin/bash
 
+unset -e 
+
 # create our folders
 mkdir -p \
     /run/unifi/work/ROOT \
@@ -93,7 +95,8 @@ java \
  -jar /usr/lib/unifi/lib/ace.jar start;
 
  echo "Java Server Ended"
- #echo "contents of Server Log:"
+ echo "contents of /config/logs/server.log:"
+ cat /config/logs/server.log
 
 echo "Processes:"
 ps xal
