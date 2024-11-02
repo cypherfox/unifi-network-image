@@ -91,3 +91,9 @@ java \
  --add-opens java.base/java.io=ALL-UNNAMED \
  --add-opens java.rmi/sun.rmi.transport=ALL-UNNAMED \
  -jar /usr/lib/unifi/lib/ace.jar start;
+
+ echo "Java Server Ended"
+ #echo "contents of Server Log:"
+
+echo "Processes:"
+ps xal

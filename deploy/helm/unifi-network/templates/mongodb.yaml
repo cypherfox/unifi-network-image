@@ -9,7 +9,9 @@ spec:
   version: "6.0.5"
   security:
     authentication:
-      modes: ["SCRAM-SHA-1"]
+      modes: 
+      - "SCRAM-SHA-1"
+      - "SCRAM-SHA-256"
   users:
     - name: {{ .Values.mongodb.user }}
       db: admin

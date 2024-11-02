@@ -41,6 +41,8 @@ spec:
              value: {{ .Values.mongodb.fqdn }}
            - name: MONGO_PORT
              value: "{{ .Values.mongodb.port }}"
+           - name: MONGO_AUTHSOURCE
+             value: admin
            - name: MONGO_DBNAME
              value: {{ .Values.mongodb.dbName }}
            - name: MONGO_PASS
