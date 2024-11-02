@@ -1,6 +1,6 @@
 #!/bin/bash
 
-unset -e 
+set +e 
 
 # create our folders
 mkdir -p \
