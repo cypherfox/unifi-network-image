@@ -4,11 +4,13 @@
 
 mongodb:
   host: "unifi-network-mongodb-svc"
+  fqdn: "unifi-network-mongodb-svc.unifi-network.svc.cluster.local"
   port: "27017"
   user: "unifi-user"
   # the password for the user will be read from this secret
   passwordSecret: "unifi-password"
-  dbname: "admin"
+  # this MUST NOT be admin!
+  dbName: "unifi-network"
   resourceName: "unifi-network-mongodb"
 
 
