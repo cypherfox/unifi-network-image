@@ -46,7 +46,7 @@ if [[ ! -e /config/data/system.properties ]]; then
         done
         sed -i "s/~MONGO_USER~/${MONGO_USER}/" /defaults/system.properties
         sed -i "s/~MONGO_HOST~/${MONGO_HOST}/" /defaults/system.properties
-        sed -i "s/~MONGO_HOST~/${MONGO_FQDN}/" /defaults/system.properties
+        sed -i "s/~MONGO_FQDN~/${MONGO_FQDN}/" /defaults/system.properties
         sed -i "s/~MONGO_PORT~/${MONGO_PORT}/" /defaults/system.properties
         sed -i "s/~MONGO_DBNAME~/${MONGO_DBNAME}/" /defaults/system.properties
         sed -i "s/~MONGO_PASS~/${MONGO_PASS}/" /defaults/system.properties
