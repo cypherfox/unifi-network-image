@@ -15,8 +15,8 @@ RUN \
 apt-get update && apt-get install ca-certificates apt-transport-https curl -y && \
 echo 'deb [ arch=amd64,arm64 ] https://www.ui.com/downloads/unifi/debian stable ubiquiti' > /etc/apt/sources.list.d/100-ubnt-unifi.list && \
 curl -o /etc/apt/trusted.gpg.d/unifi-repo.gpg -L https://dl.ui.com/unifi/unifi-repo.gpg  && \
-apt-get update && sudo apt-get install unifi -y && \
-apt-get remove curl
+apt-get update && apt-get install unifi -y && \
+apt-get remove curl -y
 
 
 # add local files
