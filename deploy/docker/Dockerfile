@@ -1,6 +1,4 @@
-# syntax=docker/dockerfile:1
-
-FROM alpine:3.20
+FROM ubuntu
 
 # set version label
 ARG BUILD_DATE
@@ -14,32 +12,11 @@ ARG UNIFI_BRANCH="stable"
 ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN \
-  echo "**** install packages ****" && \
-  apk add --no-cache jsvc logrotate openjdk17-jre-headless unzip curl binutils bash && \
-  echo "**** install unifi ****" && \
-  if [ -z ${UNIFI_VERSION+x} ]; then \
-    UNIFI_VERSION=$(curl -sX GET https://dl.ui.com/unifi/debian/dists/${UNIFI_BRANCH}/ubiquiti/binary-amd64/Packages \
-    |grep -A 7 -m 1 'Package: unifi' \
-    | awk -F ': ' '/Version/{print $2;exit}' \
-    | awk -F '-' '{print $1}'); \
-  fi && \
-  mkdir -p /app && \
-  echo "*** download and unpack generic Unix zip ***" && \
-  curl -o /tmp/unifi.zip -L "https://dl.ui.com/unifi/${UNIFI_VERSION}/UniFi.unix.zip" && \
-  unzip /tmp/unifi.zip -d /usr/lib && \
-  mv /usr/lib/UniFi /usr/lib/unifi && \
-  echo "*** download and unpack generic Unix zip ***" && \
-  curl -o /tmp/unifi.deb -L https://dl.ui.com/unifi/${UNIFI_VERSION}/unifi_sysvinit_all.deb && \
-  mkdir /tmp/unifi-package && ar xv --output /tmp/unifi-package /tmp/unifi.deb && \
-  mkdir /tmp/data-unpack && tar xvJf /tmp/unifi-package/data.tar.xz -C /tmp/data-unpack && \
-  mkdir -p /usr/lib/unifi/lib/native/Linux/x86_64 && \
-  cd /tmp/data-unpack/usr/lib/unifi/lib/native/Linux/x86_64 && cp -v libubnt* /usr/lib/unifi/lib/native/Linux/x86_64 && \
-  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
-  echo "**** cleanup ****" && \
-  apk del curl binutils && \
-  rm -rf \
-    /tmp/* \
-    /var/tmp/* 
+apt-get update && apt-get install ca-certificates apt-transport-https && \
+echo 'deb [ arch=amd64,arm64 ] https://www.ui.com/downloads/unifi/debian stable ubiquiti' > /etc/apt/sources.list.d/100-ubnt-unifi.list && \
+wget -O /etc/apt/trusted.gpg.d/unifi-repo.gpg https://dl.ui.com/unifi/unifi-repo.gpg  && \
+apt-get update && sudo apt-get install unifi -y
+
 
 # add local files
 COPY system.properties /defaults/system.properties
