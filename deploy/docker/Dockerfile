@@ -33,5 +33,5 @@ WORKDIR /usr/lib/unifi
 VOLUME /config
 EXPOSE 8080 8443 8843 8880
 
-#ENTRYPOINT [ "/bin/bash", "/root/run_unifi_network.sh" ]
-ENTRYPOINT [ "/bin/bash", "/root/block_script.sh" ]
+ENTRYPOINT [ "/bin/bash", "/root/run_unifi_network.sh" ]
+#ENTRYPOINT [ "/bin/bash", "/root/block_script.sh" ]
