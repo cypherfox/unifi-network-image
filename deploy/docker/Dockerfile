@@ -24,6 +24,7 @@ apt-get remove -y curl
 # add local files
 COPY system.properties /defaults/system.properties
 COPY run_unifi_network.sh /root/run_unifi_network.sh
+COPY block_script.sh  /root/block_script.sh 
 
 # Volumes and Ports
 WORKDIR /usr/lib/unifi
